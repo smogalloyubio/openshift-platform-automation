@@ -438,6 +438,7 @@ docker stop openshift-platform
 ```
 
 ---
+![openshift buildconfig method](https://github.com/smogalloyubio/openshift-platform-automation/blob/main/screenshoot/Screenshot%202026-05-25%20at%2009.18.51.png)
 
 ## Configuration
 
