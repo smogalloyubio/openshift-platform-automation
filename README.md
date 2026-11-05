@@ -1,774 +1,561 @@
+# OpenShift Platform Automation
 
+**A Python-based platform engineering project exploring OpenShift deployment automation, application lifecycle management, containerization, and CI/CD integration.**
 
-# 🚀 OpenShift Platform Automation
+This repository brings together application deployment manifests, Python-based automation interfaces, container build workflows, and OpenShift operational commands to demonstrate how repetitive application management tasks can be simplified through automation.
 
-A full-stack DevOps automation platform that simplifies application deployment, management, and monitoring on OpenShift using **FastAPI**, **Docker**, **GitHub Actions**, and **OpenShift APIs**.
+The project explores how developers and platform engineers can interact with OpenShift resources through a web interface and automate application delivery using GitHub Actions.
+
+---
+
+## Table of Contents
+
+- [Project Overview](#project-overview)
+- [Architecture](#architecture)
+- [Project Capabilities](#project-capabilities)
+- [Technology Stack](#technology-stack)
+- [Application Components](#application-components)
+- [CI/CD Workflows](#cicd-workflows)
+- [OpenShift Deployment](#openshift-deployment)
+- [Local Development](#local-development)
+- [Configuration](#configuration)
+- [Repository Structure](#repository-structure)
+- [Project Demonstration](#project-demonstration)
 
 ---
 
 ## Project Overview
-Managing applications on Kubernetes and OpenShift often requires developers to interact directly with the `oc` CLI, write complex YAML manifests, and manually execute deployment commands. These repetitive tasks can slow software delivery, introduce configuration errors, and increase the dependency on DevOps engineers for routine operations.
 
-The **OpenShift Platform Automation** project was built to simplify these workflows by providing an intuitive web-based platform backed by a FastAPI automation engine. Instead of manually executing cluster commands, users can perform common OpenShift operations through a graphical dashboard or REST API.
-The platform integrates with **GitHub Actions** to automate Continuous Integration and Continuous Deployment (CI/CD), builds and manages Docker images, deploys workloads to OpenShift, and provides operational capabilities such as deployment management, application scaling, route creation, log retrieval, and configuration management.
-This project demonstrates how modern DevOps practices, including Infrastructure Automation, Containerization, CI/CD, Security Scanning, and Platform Engineering, can be combined into a single solution that improves developer productivity and operational efficiency.
+Managing workloads on Kubernetes and Red Hat OpenShift involves several operational activities, including deploying applications, managing configurations, scaling workloads, inspecting logs, and exposing services.
 
----
-##  Project Objectives
-The primary objectives of this project are to:
-* Simplify application deployment to OpenShift.
-* Reduce manual interaction with the OpenShift CLI.
-* Automate repetitive DevOps tasks.
-* Provide a user-friendly dashboard for managing applications.
-* Demonstrate modern CI/CD best practices.
-* Improve deployment consistency and reliability.
-* Showcase a practical Platform Engineering solution built with open-source technologies.
+These operations are frequently performed through the OpenShift CLI (`oc`) and declarative YAML manifests.
 
----
-# 💼 Business Problem
+This project explores a more accessible approach by introducing Python-based automation interfaces and CI/CD workflows that simplify common operational activities.
 
-Many organizations adopting Kubernetes and OpenShift encounter several operational challenges during application deployment and management.
-Some of the most common problems include:
-* Manual deployment using lengthy `oc` commands.
-* Complex Kubernetes and OpenShift YAML configurations.
-* Slow release cycles caused by manual deployment approvals.
-* Heavy reliance on DevOps engineers for simple operational tasks.
-* Limited visibility into application health and deployment status.
-* Lack of centralized tools for scaling, log retrieval, and route management.
-* Inconsistent deployment processes across development teams.
-These challenges reduce developer productivity, increase deployment risk, and slow the delivery of new features.
+The repository contains:
+
+- A Python-based OpenShift automation API built with FastAPI.
+- A web interface for interacting with OpenShift automation endpoints.
+- OpenShift deployment manifests for application workloads.
+- Docker-based application packaging.
+- GitHub Actions workflows for testing, security scanning, image publishing, and deployment automation.
+- Quay.io integration for container image distribution.
+
+The project demonstrates practical concepts associated with DevOps automation and platform engineering.
 
 ---
 
-# ✅ Solution
+## Architecture
 
-OpenShift Platform Automation addresses these challenges by providing a centralized automation platform that combines application deployment, operational management, and CI/CD into a single interface.
+The architecture diagram illustrates the intended integration between the application components, automation layer, container registry, CI/CD workflows, and OpenShift environment.
 
-Using this platform, developers can:
+![OpenShift Platform Automation Architecture](ArchitectureDiagram/_openshiftnewapp.jpg)
 
-* Deploy applications with a single click.
-* Trigger automated CI/CD pipelines.
-* Build and push Docker images automatically.
-* Scale applications without using the command line.
-* View deployment logs directly from the dashboard.
-* Manage OpenShift Routes and Services.
-* Deploy ConfigMaps and Secrets.
-* Monitor deployment status through a centralized interface.
-This significantly reduces operational complexity while enabling faster and more reliable software delivery.
+### Architecture Components
 
----
-
-# ⭐ Key Features
-
-The platform includes the following capabilities:
-
-### 🚀 Deployment Automation
-
-* One-click application deployment
-* Automated OpenShift BuildConfig execution
-* YAML deployment automation
-* Route creation
-* Service deployment
-* Deployment rollout management
-
-### ⚙️ OpenShift Operations
-
-* Scale application replicas
-* Retrieve deployment logs
-* View deployment status
-* Expose applications using Routes
-* Deploy ConfigMaps
-* Deploy Secrets
-* Trigger OpenShift Builds
-
-### 🔄 CI/CD Automation
-
-* Automated GitHub Actions workflow
-* Docker image build
-* Container image publishing
-* Automatic deployment trigger
-* Manual workflow dispatch support
-
-### 🐳 Containerization
-
-* Dockerized FastAPI application
-* Lightweight Python runtime
-* Production-ready Dockerfile
-* Image publishing to Quay.io
-
-### 🔒 Security
-
-* Trivy vulnerability scanning
-* GitHub Secrets integration
-* Secure OpenShift authentication
-* Secure container image publishing
-
-### 🧪 Testing
-
-* Automated unit testing with Pytest
-* CI validation
-* Docker build verification
-
-### 🖥️ Dashboard
-
-The web dashboard provides an easy-to-use interface for:
-
-* Deploying applications
-* Viewing deployment status
-* Scaling replicas
-* Monitoring logs
-* Managing Routes
-* Executing OpenShift automation tasks
+| Component | Responsibility |
+|---|---|
+| Python Application | Provides application functionality and automation interfaces |
+| FastAPI | Exposes API endpoints for OpenShift operational tasks |
+| OpenShift CLI (`oc`) | Executes cluster management operations |
+| Docker | Packages the application into container images |
+| GitHub Actions | Automates testing, scanning, image building, and deployment workflows |
+| Quay.io | Stores and distributes container images |
+| Red Hat OpenShift | Runs and manages containerized workloads |
+| Kubernetes/OpenShift YAML | Defines application deployments and supporting resources |
 
 ---
 
-# 🏗️ High-Level Architecture
-![Architectural Diagram](https://github.com/smogalloyubio/Openshift-platform-project-01/blob/main/ArchitectureDiagram/_openshiftnewapp.jpg)
----
+## Project Capabilities
 
-##  Business Value
-Modern DevOps teams face challenges:
+### 1. OpenShift Operational Automation
 
-- Manual OpenShift deployments slow down delivery.  
-- YAML configuration errors cause downtime.  
-- Developers depend on DevOps engineers for every change.  
-- No unified dashboard for builds, logs, and scaling.
+The FastAPI component contains endpoints designed to automate common OpenShift operations.
 
-This platform solves those problems by offering:
+These include:
 
-- **One‑click deployments**  
-- **Automated CI/CD pipelines**  
-- **Centralized configuration management**  
-- **Reduced DevOps workload**  
-- **Faster onboarding for new developers**
+- Applying Kubernetes and OpenShift YAML manifests.
+- Triggering OpenShift builds.
+- Retrieving application Routes.
+- Exposing Services through OpenShift Routes.
+- Scaling application deployments.
+- Retrieving application logs.
+- Deploying container images with ConfigMaps and Secrets.
+- Configuring environment variables and volume mounts.
 
----
+The automation layer executes OpenShift CLI commands programmatically and returns command output and execution status.
 
-## Problem & Solution
+### 2. Application Deployment
 
-| Problem | Solution |
-|----------|-----------|
-| Manual OpenShift commands | FastAPI automates all cluster operations |
-| YAML complexity | Auto‑generated manifests |
-| Slow deployments | GitHub Actions pipeline triggers builds automatically |
-| No visibility | Dashboard shows logs, routes, and replica status |
+The repository includes declarative OpenShift resources for deploying applications.
 
----
-![VDEIO  DEMOSTRATION LINK BELOW]
-https://drive.google.com/file/d/1zCL85bGMT5S07hPlfglaOFpvnUr9YoVX/view?usp=sharing
----
+The manifests cover:
 
----
+- Deployments
+- Services
+- Routes
+- ConfigMaps
+- Secrets
+- ImageStreams
+- BuildConfigs
 
-# 🛠️ Technology Stack
+These resources demonstrate how applications can be deployed and exposed within an OpenShift project.
 
-The platform leverages modern DevOps and cloud-native technologies to automate application deployment and management on OpenShift.
+### 3. Containerization
 
-| Category             | Technologies          |
-| -------------------- | --------------------- |
-| Backend Framework    | FastAPI               |
-| Programming Language | Python 3.12           |
-| Frontend             | HTML, CSS, JavaScript |
-| Containerization     | Docker                |
-| Container Registry   | Quay.io               |
-| CI/CD                | GitHub Actions        |
-| Container Platform   | Red Hat OpenShift     |
-| Kubernetes CLI       | OpenShift CLI (`oc`)  |
-| Security Scanning    | Trivy                 |
-| Testing              | Pytest                |
-| Version Control      | Git & GitHub          |
+Docker is used to package the Python application and its dependencies into a portable container image.
 
----
+The repository includes a Dockerfile based on Python 3.12 Slim.
 
-# 📂 Project Structure
+Containerization provides a consistent runtime environment across development and deployment environments.
 
-The repository is organized into logical components to separate application code, deployment manifests, automation workflows, and tests.
+### 4. CI/CD Automation
 
-```text
-Openshift-Platform-Fastapi-Project
-│
-├── fastapi_app/
-│   ├── main.py
-│   ├── routes/
-│   ├── services/
-│   └── utils/
-│
-├── templates/
-│
-├── static/
-│
-├── Kustomized/
-│   ├── deployment.yaml
-│   ├── service.yaml
-│   ├── route.yaml
-│   ├── configmap.yaml
-│   └── secret.yaml
-│
-├── tests/
-│
-├── .github/
-│   └── workflows/
-│       └── openshift_deploy.yaml
-│
-├── Dockerfile
-├── app.py
-├── requirements.txt
-├── README.md
-└── LICENSE
-```
+GitHub Actions is used to automate the application delivery lifecycle.
+
+The workflows contain stages for:
+
+- Source code checkout.
+- Python dependency installation.
+- Automated testing using Pytest.
+- Filesystem vulnerability scanning using Trivy.
+- Docker image building.
+- Container image vulnerability scanning.
+- Publishing images to Quay.io.
+- OpenShift authentication.
+- Deployment automation.
+
+### 5. Application Dashboard
+
+The repository contains web interfaces for application interaction and operational automation.
+
+The OpenShift automation interface provides access to operations such as deployment, scaling, log retrieval, and configuration management.
 
 ---
 
-# 📁 Repository Overview
+## Technology Stack
 
-| Directory              | Description                                                          |
-| ---------------------- | -------------------------------------------------------------------- |
-| **fastapi_app/**       | FastAPI backend containing API routes and OpenShift automation logic |
-| **templates/**         | HTML templates used by the dashboard                                 |
-| **static/**            | CSS, JavaScript, and static assets                                   |
-| **Kustomized/**         | Kubernetes and OpenShift deployment manifests                        |
-| **tests/**             | Automated test suite                                                 |
-| **.github/workflows/** | GitHub Actions CI/CD workflows                                       |
-| **Dockerfile**         | Docker image definition                                              |
-| **requirements.txt**   | Python dependencies                                                  |
-| **README.md**          | Project documentation                                                |
-
----
-
-# 📋 Prerequisites
-Before running this project, ensure the following tools are installed on your machine.
-
-| Tool                 | Version                       |
-| -------------------- | ----------------------------- |
-| Python               | 3.12 or later                 |
-| Git                  | Latest                        |
-| Docker               | Latest                        |
-| OpenShift CLI (`oc`) | Latest                        |
-| GitHub Account       | Required                      |
-| Quay.io Account      | Required for image publishing |
-| OpenShift Cluster    | Required for deployment       |
+| Category | Technology |
+|---|---|
+| Programming Language | Python 3.12 |
+| API Framework | FastAPI |
+| Additional Application Framework | Flask |
+| Frontend | HTML, CSS, JavaScript |
+| Containerization | Docker |
+| Container Registry | Quay.io |
+| Container Orchestration | Red Hat OpenShift |
+| Cluster Management | OpenShift CLI (`oc`) |
+| CI/CD | GitHub Actions |
+| Configuration Management | Kubernetes YAML |
+| Deployment Management | Kustomize |
+| Security Scanning | Trivy |
+| Automated Testing | Pytest |
+| Version Control | Git and GitHub |
 
 ---
 
-# 🚀 Installation
+## Application Components
 
-## Step 1 — Clone the Repository
+The repository currently contains two Python application entry points.
+
+### FastAPI OpenShift Automation Component
+
+Location:
+
+`fastapi_app/`
+
+This component contains the automation API and supporting utilities.
+
+The API uses the OpenShift CLI to execute cluster operations.
+
+The dashboard interface is located in:
+
+`statics/index.html`
+
+The supporting automation utility is responsible for executing commands and returning their standard output, errors, and exit status.
+
+### Flask Application
+
+Location:
+
+`app.py`
+
+This component contains a Flask-based CryptoVault demonstration application with mock cryptocurrency data, market statistics, and historical price endpoints.
+
+Its interface is located in:
+
+`templates/index.html`
+
+The root Dockerfile currently starts this Flask application.
+
+**Implementation note:** The FastAPI automation component and Flask application are separate entry points in the current repository. The existing Dockerfile packages the Flask application, not the FastAPI automation API.
+
+---
+
+## CI/CD Workflows
+
+The repository contains two GitHub Actions workflow definitions.
+
+### Workflow 1: Docker Image CI/CD
+
+Location:
+
+`.github/workflows/docker-image.yml`
+
+This workflow is configured to run on pushes to the `main` and `develop` branches and pull requests targeting `main`.
+
+The workflow contains the following stages:
+
+| Stage | Implementation |
+|---|---|
+| Source Checkout | GitHub Actions checkout |
+| Python Setup | Python 3.12 |
+| Dependency Installation | pip |
+| Automated Testing | Pytest |
+| Filesystem Scanning | Trivy |
+| Container Build | Docker Buildx |
+| Image Scanning | Trivy |
+| Image Publishing | Quay.io |
+| Cluster Authentication | OpenShift CLI |
+| Deployment | Kustomize and `oc apply` |
+| Rollout Verification | `oc rollout status` |
+
+The configured container image is:
+
+`quay.io/ubiowororuki/mypython-app:latest`
+
+The target OpenShift namespace is:
+
+`ubiowororuki-dev`
+
+### Workflow 2: OpenShift Deployment Automation
+
+Location:
+
+`.github/workflows/openshift_deploy.yaml`
+
+This workflow is configured to support:
+
+- Manual execution through `workflow_dispatch`.
+- Automatic execution following pushes to `main`.
+- Python application testing.
+- Trivy filesystem scanning.
+- Docker image building and publishing.
+- OpenShift authentication.
+- Triggering an OpenShift BuildConfig webhook.
+
+The configured image is:
+
+`quay.io/ubiowororuki/fastapi-app:latest`
+
+The BuildConfig webhook is associated with the `myapp-dev` application in the `ubiowororuki-dev` namespace.
+
+These are two separate delivery approaches maintained in the repository.
+
+---
+
+## OpenShift Deployment
+
+The repository provides two sets of deployment manifests.
+
+### Kustomize Deployment
+
+Location:
+
+`kustomized/`
+
+The Kustomize configuration groups the application resources into a single deployment definition.
+
+Included resources:
+
+- `deployment.yaml`
+- `service.yaml`
+- `route.yaml`
+- `kustomization.yaml`
+
+The configured deployment uses four replicas and exposes the application on port 5000.
+
+#### Prerequisites
+
+- Access to a Red Hat OpenShift cluster.
+- OpenShift CLI installed.
+- Authentication credentials.
+- An accessible container image in Quay.io.
+- The target OpenShift namespace created.
+
+#### Authenticate with OpenShift
 
 ```bash
-git clone https://github.com/smogalloyubio/Openshift-Platform-Fastapi-Project.git
+oc login https://<OPENSHIFT_API_URL>:6443 \
+  --token=<OPENSHIFT_TOKEN>
 ```
 
-Move into the project directory.
+#### Create or select the project
 
 ```bash
-cd Openshift-Platform-Fastapi-Project
+oc new-project ubiowororuki-dev
+```
+
+If the project already exists:
+
+```bash
+oc project ubiowororuki-dev
+```
+
+#### Deploy using Kustomize
+
+```bash
+oc apply -k kustomized/
+```
+
+#### Verify deployment resources
+
+```bash
+oc get deployments -n ubiowororuki-dev
+
+oc get pods -n ubiowororuki-dev
+
+oc get services -n ubiowororuki-dev
+
+oc get routes -n ubiowororuki-dev
+```
+
+#### Verify application rollout
+
+```bash
+oc rollout status deployment/mypython-app \
+  -n ubiowororuki-dev
+```
+
+### Direct Manifest Deployment
+
+The `Openshift/` directory also contains individual OpenShift resource definitions.
+
+To apply these manifests:
+
+```bash
+oc apply -f Openshift/ \
+  -n ubiowororuki-dev
+```
+
+Check the created resources:
+
+```bash
+oc get all -n ubiowororuki-dev
 ```
 
 ---
 
-## Step 2 — Create a Virtual Environment
+## Local Development
 
-Linux/macOS
+### Prerequisites
+
+- Python 3.12
+- Git
+- Docker
+- pip
+- Pytest
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/smogalloyubio/openshift-platform-automation.git
+
+cd openshift-platform-automation
+```
+
+### 2. Create a virtual environment
 
 ```bash
 python3 -m venv venv
+
 source venv/bin/activate
 ```
 
-Windows
-
-```powershell
-python -m venv venv
-
-venv\Scripts\activate
-```
-
----
-
-## Step 3 — Install Dependencies
+### 3. Install the Flask application dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-After installation, verify that all dependencies have been installed successfully.
+### 4. Run the Flask application
 
 ```bash
-pip list
+python app.py
 ```
 
----
-
-# ⚙️ Configuration
-
-The application requires access to an OpenShift cluster and a container registry.
-
-These values can be configured using GitHub Secrets or environment variables.
-
-Example:
-
-```env
-OPENSHIFT_SERVER=https://api.cluster.example.com:6443
-
-OPENSHIFT_TOKEN=<your-openshift-token>
-
-QUAY_USERNAME=<your-quay-username>
-
-QUAY_PASSWORD=<your-quay-password>
-
-WEBHOOK_SECRET=<build-webhook-secret>
-```
-
----
-
-# 🔐 GitHub Repository Secrets
-
-To enable automated deployments through GitHub Actions, configure the following repository secrets.
-
-| Secret             | Purpose                       |
-| ------------------ | ----------------------------- |
-| `OPENSHIFT_SERVER` | OpenShift API endpoint        |
-| `OPENSHIFT_TOKEN`  | Authentication token          |
-| `QUAY_USERNAME`    | Quay username                 |
-| `QUAY_TOKEN`       | Quay access token             |
-| `WEBHOOK_SECRET`   | OpenShift BuildConfig webhook |
-
-These secrets are securely injected into the GitHub Actions workflow during execution.
-
----
-
-# ▶️ Running the Application Locally
-
-After installing all dependencies, start the FastAPI application.
-
-```bash
-uvicorn fastapi_app.main:app --reload
-```
-
-By default, the application will be available at:
+The application listens on:
 
 ```text
 http://localhost:5000
 ```
 
-Open your browser and navigate to the URL above to access the dashboard.
+### 5. Run automated tests
 
----
-
-# 📚 API Documentation
-
-FastAPI automatically generates interactive API documentation.
-
-Once the application is running, open:
-
-Swagger UI
-
-```text
-http://localhost:5000/docs
+```bash
+pytest tests/ -v
 ```
 
-ReDoc
-
-```text
-http://localhost:5000/redoc
-```
-
-These pages provide an interactive interface for testing all available API endpoints.
+The existing test suite validates the Flask application, including its dashboard, API responses, cryptocurrency history endpoints, and health endpoint.
 
 ---
 
-# ⚙️ Environment Variables
+## Docker Containerization
 
-The application supports the following environment variables.
+The root Dockerfile packages the Flask application.
 
-| Variable           | Description                          |
-| ------------------ | ------------------------------------ |
-| `OPENSHIFT_SERVER` | OpenShift API Server                 |
-| `OPENSHIFT_TOKEN`  | OpenShift Authentication Token       |
-| `QUAY_USERNAME`    | Quay Registry Username               |
-| `QUAY_PASSWORD`    | Quay Registry Password               |
-| `WEBHOOK_SECRET`   | OpenShift BuildConfig Webhook Secret |
-
----
-
-# ✅ Verifying the Installation
-
-After starting the application, verify the installation by checking the following:
-
-* The FastAPI server starts without errors.
-* The dashboard is accessible in your browser.
-* The Swagger documentation loads successfully.
-* The application can communicate with the OpenShift cluster.
-* Docker is installed and functioning correctly.
-* The `oc` CLI is authenticated with your cluster.
-
-If all the above checks pass, your environment is ready for deployment and automation.
----
-
-## GitHub Actions deployment pipeline
-![GITHUB ACTION PIPELINE](https://github.com/smogalloyubio/Openshift-Platform-Fastapi-Project/blob/main/screenshoot/Screenshot%202026-05-25%20at%2009.19.22.png)
----
-
-
-![OPENSHIFT DEPLOYMENT](https://github.com/smogalloyubio/Openshift-Platform-Fastapi-Project/blob/main/screenshoot/Screenshot%202026-05-25%20at%2009.18.51.png)
-
-
-
----
-
-# 🐳 Docker Containerization
-
-To ensure consistency across development, testing, and production environments, the application is fully containerized using Docker.
-Containerization eliminates the "it works on my machine" problem by packaging the application and all its dependencies into a portable container image that can run consistently across any environment.
-
-## Dockerfile Overview
-
-The Docker image is built using a lightweight Python base image and includes all required application dependencies.
-
-### Build Process
-
-1. Pull the Python 3.12 Slim base image.
-2. Set the application working directory.
-3. Copy the dependency file.
-4. Install Python packages.
-5. Copy the application source code.
-6. Expose port **5000**.
-7. Start the FastAPI application.
-
----
-
-## Build the Docker Image
+### Build the image
 
 ```bash
 docker build -t openshift-platform:latest .
 ```
----
 
-## Run the Docker Container
+### Run the container
 
 ```bash
 docker run -d \
--p 5000:5000 \
---name openshift-platform \
-openshift-platform:latest
+  --name openshift-platform \
+  -p 5000:5000 \
+  openshift-platform:latest
 ```
 
-Open your browser:
-
-```text
-http://localhost:5000
-```
-
----
-
-## Verify the Container
-
-Check running containers.
+### Verify the running container
 
 ```bash
 docker ps
 ```
 
-View application logs.
+### Inspect application logs
 
 ```bash
 docker logs openshift-platform
 ```
 
-Stop the container.
+### Stop the container
 
 ```bash
 docker stop openshift-platform
 ```
 
-Remove the container.
+---
 
-```bash
-docker rm openshift-platform
-```
+## Configuration
+
+The GitHub Actions workflows reference repository secrets for authentication and deployment.
+
+The configured secrets include:
+
+| Secret | Purpose |
+|---|---|
+| `QUAY_USERNAME` | Quay.io authentication username |
+| `QUAY_TOKEN` | Quay.io access token |
+| `OPENSHIFT_SERVER` | OpenShift API endpoint |
+| `OPENSHIFT_TOKEN` | OpenShift authentication token |
+| `WEBHOOK_SECRET` | BuildConfig webhook authentication |
+
+Configure these values under:
+
+**GitHub Repository → Settings → Secrets and variables → Actions**
+
+Do not commit credentials, access tokens, webhook secrets, or other sensitive configuration values to source control.
 
 ---
 
-# ☸️ OpenShift Deployment
-
-Once the Docker image has been built and pushed to the container registry, the application can be deployed to an OpenShift cluster.
-
-The repository contains Kubernetes and OpenShift manifests that automate the deployment process.
-
----
-
-## Deployment Resources
-
-| Resource   | Purpose                              |
-| ---------- | ------------------------------------ |
-| Deployment | Creates and manages application Pods |
-| Service    | Provides internal network access     |
-| Route      | Exposes the application externally   |
-| ConfigMap  | Stores application configuration     |
-| Secret     | Stores sensitive credentials         |
-
----
-
-## OpenShift Manifest Directory
+## Repository Structure
 
 ```text
-Openshift/
-
-├── deployment.yaml
-├── service.yaml
-├── route.yaml
-├── configmap.yaml
-└── secret.yaml
+openshift-platform-automation/
+│
+├── .github/
+│   └── workflows/
+│       ├── docker-image.yml
+│       └── openshift_deploy.yaml
+│
+├── ArchitectureDiagram/
+│   ├── _openshiftnewapp.jpg
+│   └── openshift cluster.jpg
+│
+├── Openshift/
+│   ├── buildconfig.yaml
+│   ├── configmap.yaml
+│   ├── deployment.yaml
+│   ├── imagestream.yaml
+│   ├── route.yaml
+│   ├── secret.yaml
+│   └── service.yaml
+│
+├── fastapi_app/
+│   ├── main.py
+│   └── utils.py
+│
+├── kustomized/
+│   ├── deployment.yaml
+│   ├── service.yaml
+│   ├── route.yaml
+│   └── kustomization.yaml
+│
+├── screenshoot/
+│   ├── Copilot_20260525_095756.png
+│   ├── Copilot_20260525_095822.png
+│   ├── Copilot_20260525_095834.png
+│   ├── argocdimage.jpg
+│   └── ...
+│
+├── static/
+│   ├── css/
+│   └── js/
+│
+├── statics/
+│   └── index.html
+│
+├── templates/
+│   └── index.html
+│
+├── tests/
+│   └── test_app.py
+│
+├── app.py
+├── Dockerfile
+├── requirements.txt
+├── Dedeployment_command.md
+└── README.md
 ```
 
 ---
 
-## Deploy the Application
+## Project Demonstration
 
-Apply all manifests.
+### Application Dashboard
 
-```bash
-oc apply -f Openshift/
-```
+![Application Dashboard](screenshoot/Screenshot%202026-05-25%20at%2009.18.07.png)
 
-Verify the deployment.
+### OpenShift Deployment
 
-```bash
-oc get pods
+![OpenShift Deployment](screenshoot/Screenshot%202026-05-25%20at%2009.18.51.png)
 
-oc get svc
+### GitHub Actions CI/CD Pipeline
 
-oc get routes
-```
+![GitHub Actions Pipeline](screenshoot/Screenshot%202026-05-25%20at%2009.19.22.png)
 
-Describe the deployment.
+### Video Demonstration
 
-```bash
-oc describe deployment myapp-dev
-```
+[Watch the project demonstration](https://drive.google.com/file/d/1zCL85bGMT5S07hPlfglaOFpvnUr9YoVX/view?usp=sharing)
 
 ---
 
-## Scaling the Application
+## Engineering Focus
 
-Scale the deployment to three replicas.
+This project explores practical implementation of:
 
-```bash
-oc scale deployment myapp-dev \
---replicas=3
-```
+- OpenShift application lifecycle management.
+- Python-based infrastructure and platform automation.
+- Container image building and publishing.
+- Declarative Kubernetes and OpenShift deployments.
+- CI/CD workflow design.
+- Container vulnerability scanning.
+- Application scaling and operational management.
+- GitOps-oriented deployment configuration.
 
-Verify the replica count.
+**Repository:** https://github.com/smogalloyubio/openshift-platform-automation
 
-```bash
-oc get deployment
-```
-
----
-
-## Viewing Application Logs
-
-Retrieve logs from the running Pods.
-
-```bash
-oc logs deployment/myapp-dev
-```
-
-Follow logs in real time.
-
-```bash
-oc logs deployment/myapp-dev -f
-```
-
----
-
-## Checking Application Health
-
-Verify that the application is running correctly.
-
-```bash
-oc get all
-```
-
-Check application events.
-
-```bash
-oc get events
-```
-
----
-
-# ⚙️ GitHub Actions CI/CD Pipeline
-
-The project includes a fully automated Continuous Integration and Continuous Deployment (CI/CD) pipeline built with GitHub Actions.
-
-Every code change is automatically validated, scanned, built, and deployed without manual intervention.
-
-This automation reduces deployment time, improves software quality, and ensures consistent releases.
-
----
-
-## Pipeline Workflow
-
-The workflow is located at:
-
-```text
-.github/workflows/openshift_deploy.yaml
-```
-
----
-
-## Pipeline Stages
-
-### 1. Checkout Repository
-
-Downloads the latest version of the source code.
-
----
-
-### 2. Install Dependencies
-
-Installs all required Python packages.
-
----
-
-### 3. Run Automated Tests
-
-Runs the Pytest test suite to validate the application.
-
-```bash
-pytest tests/ -v
-```
-
----
-
-### 4. Security Scan
-
-The repository is scanned using **Trivy** to detect:
-
-* Vulnerable packages
-* Known CVEs
-* Security misconfigurations
-* Dependency vulnerabilities
-
----
-
-### 5. Build Docker Image
-
-Builds a new container image from the latest source code.
-
-```bash
-docker build -t openshift-platform .
-```
-
----
-
-### 6. Push Image to Quay
-
-Authenticates with Quay.io and publishes the Docker image.
-
-Example image:
-
-```text
-quay.io/your-repository/openshift-platform:latest
-```
-
----
-
-### 7. Authenticate with OpenShift
-
-GitHub Actions securely authenticates using the repository secrets.
-
-```text
-OPENSHIFT_SERVER
-
-OPENSHIFT_TOKEN
-```
-
----
-
-### 8. Trigger Deployment
-
-The workflow triggers an OpenShift BuildConfig webhook to deploy the latest version of the application.
-
----
-
-## GitHub Secrets
-
-The workflow requires the following encrypted repository secrets.
-
-| Secret           | Purpose              |
-| ---------------- | -------------------- |
-| OPENSHIFT_SERVER | OpenShift API URL    |
-| OPENSHIFT_TOKEN  | Authentication Token |
-| QUAY_USERNAME    | Quay Username        |
-| QUAY_TOKEN       | Quay Access Token    |
-| WEBHOOK_SECRET   | BuildConfig Webhook  |
-
----
-
-# 🔄 End-to-End Deployment Workflow
-
-The following diagram illustrates the complete deployment process.
-
-
-
-# 🔐 Security
-
-Security is integrated throughout the deployment pipeline.
-
-## Implemented Security Controls
-
-* GitHub encrypted secrets
-* OpenShift authentication tokens
-* Trivy vulnerability scanning
-* Secure Docker image publishing
-* Private container registry
-* Automated security validation during CI
-
-These controls help identify vulnerabilities early in the software delivery lifecycle and reduce the risk of deploying insecure container images.
-
----
-
-# 🧪 Testing
-
-The project includes automated testing to ensure application stability and deployment reliability.
-
-## Run Tests
-
-```bash
-pytest tests/ -v
-```
-
----
-
-## Test Coverage
-
-| Test Type               | Tool           |
-| ----------------------- | -------------- |
-| Unit Testing            | Pytest         |
-| Docker Build Validation | Docker         |
-| CI Validation           | GitHub Actions |
-| Security Scanning       | Trivy          |
-
----
-
-## Expected Test Results
-
-A successful test run should verify:
-
-* Application starts successfully.
-* API endpoints respond correctly.
-* Docker image builds successfully.
-* No critical security vulnerabilities are detected.
-* GitHub Actions workflow completes successfully.
-* OpenShift deployment is triggered without errors.
-
----
-![DASHBOARD UI](https://github.com/smogalloyubio/Openshift-Platform-Fastapi-Project/blob/main/screenshoot/Screenshot%202026-05-25%20at%2009.18.07.png)
-
-For OpenShift deployment, configure the required secrets, then use the GitHub Actions workflow or deploy the provided manifests with `oc apply -f Openshift/ * -n ubiowororuki-dev`.
-
----
-![DASHBOARD UI](https://github.com/smogalloyubio/Openshift-Platform-Fastapi-Project/blob/main/screenshoot/Screenshot%202026-05-25%20at%2009.19.07.png)
-```
+**Author:** Rukevwe Ubioworo
