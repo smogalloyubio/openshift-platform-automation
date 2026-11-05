@@ -49,7 +49,7 @@ The project demonstrates practical concepts associated with DevOps automation an
 
 The architecture diagram illustrates the intended integration between the application components, automation layer, container registry, CI/CD workflows, and OpenShift environment.
 
-![OpenShift Platform Automation Architecture](ArchitectureDiagram/_openshiftnewapp.jpg)
+![OpenShift Platform Automation Architecture](https://github.com/smogalloyubio/openshift-platform-automation/blob/main/ArchitectureDiagram/openshift-developer.jpg)
 
 ### Architecture Components
 
